@@ -12,7 +12,7 @@ func main() {
 
 	v, err := config.NewViper()
 	if err != nil {
-		fmt.Println("Error on init")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
