@@ -7,3 +7,8 @@ postgres:
   dbname: 
   dbuser: 
   dbpassword: 
+
+network:
+  key:
+  wss:
+  https:  
