@@ -9,21 +9,38 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/martinconic/eth-events-indexer/config"
 )
 
-func getContractEvents() {
-	client, err := ethclient.Dial("wss://mainnet.infura.io/ws/v3/ee163cf375034b0aacee52440071e358")
+type NetworkClient struct {
+	Config *config.NetworkConfig
+
+	client *ethclient.Client
+}
+
+func NewNetworkClient(c *config.NetworkConfig) *NetworkClient {
+	return &NetworkClient{
+		Config: c,
+	}
+}
+
+func (nc *NetworkClient) GetContractEvents(address string) {
+	var err error
+
+	rawUrl := nc.Config.Wss + nc.Config.Key
+	nc.client, err = ethclient.Dial(rawUrl)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	contractAddress := common.HexToAddress("0x3845badAde8e6dFF049820680d1F14bD3903a5d0")
+	contractAddress := common.HexToAddress(address)
 	query := ethereum.FilterQuery{
 		Addresses: []common.Address{contractAddress},
 	}
 
 	logs := make(chan types.Log)
-	sub, err := client.SubscribeFilterLogs(context.Background(), query, logs)
+	sub, err := nc.client.SubscribeFilterLogs(context.Background(), query, logs)
 	if err != nil {
 		log.Fatal(err)
 	}

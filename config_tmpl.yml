@@ -1,0 +1,9 @@
+server:
+  port: 
+
+postgres:
+  dbhost: 
+  dbport: 
+  dbname: 
+  dbuser: 
+  dbpassword: 
