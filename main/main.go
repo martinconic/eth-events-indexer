@@ -6,7 +6,6 @@ import (
 
 	"github.com/martinconic/eth-events-indexer/api"
 	"github.com/martinconic/eth-events-indexer/config"
-	"github.com/martinconic/eth-events-indexer/indexer"
 )
 
 func main() {
@@ -17,11 +16,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	server := api.Server{}
-	server.Initialize()
-	server.Run(v.GetString("server.port"))
-
-	network := indexer.NewNetworkClient(config.GetNetworkConfigs(v))
-	network.GetContractEvents(v.GetString("network.address"))
+	api.StartServer(v)
 
 }

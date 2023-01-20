@@ -2,7 +2,6 @@ package indexer
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/ethereum/go-ethereum"
@@ -16,6 +15,8 @@ type NetworkClient struct {
 	Config *config.NetworkConfig
 
 	client *ethclient.Client
+
+	Logs chan types.Log
 }
 
 func NewNetworkClient(c *config.NetworkConfig) *NetworkClient {
@@ -24,7 +25,7 @@ func NewNetworkClient(c *config.NetworkConfig) *NetworkClient {
 	}
 }
 
-func (nc *NetworkClient) GetContractEvents(address string) {
+func (nc *NetworkClient) GetContractEvents(address string) error {
 	var err error
 
 	rawUrl := nc.Config.Wss + nc.Config.Key
@@ -32,6 +33,7 @@ func (nc *NetworkClient) GetContractEvents(address string) {
 
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	contractAddress := common.HexToAddress(address)
@@ -39,18 +41,23 @@ func (nc *NetworkClient) GetContractEvents(address string) {
 		Addresses: []common.Address{contractAddress},
 	}
 
-	logs := make(chan types.Log)
-	sub, err := nc.client.SubscribeFilterLogs(context.Background(), query, logs)
+	nc.Logs = make(chan types.Log)
+	sub, err := nc.client.SubscribeFilterLogs(context.Background(), query, nc.Logs)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
-	for {
-		select {
-		case err := <-sub.Err():
-			log.Fatal(err)
-		case vLog := <-logs:
-			fmt.Println(vLog) // pointer to event log
+	go func() {
+		for {
+			select {
+			case err = <-sub.Err():
+				log.Println(err)
+			case vLog := <-nc.Logs:
+				log.Println(vLog)
+			}
 		}
-	}
+	}()
+
+	return err
 }

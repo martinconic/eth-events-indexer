@@ -1,5 +1,5 @@
 package api
 
-func (f *Server) InitializeRoutes() {
-	f.Router.GET("/api/events", GetSmartContractEvents)
+func (s *Server) InitializeRoutes() {
+	s.Router.GET("/api/events", GetSmartContractEvents)
 }
