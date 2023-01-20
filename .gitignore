@@ -1,4 +1,8 @@
-config.yml
+.env
+
+docker-compose.yaml
+
+./db-data/
 
 # Mac
 .DS_Store
