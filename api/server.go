@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/martinconic/eth-events-indexer/config"
 	"github.com/martinconic/eth-events-indexer/indexer"
+	"github.com/martinconic/eth-events-indexer/utils/constants"
 	"github.com/spf13/viper"
 )
 
@@ -18,7 +19,7 @@ var server *Server
 func StartServer(v *viper.Viper) {
 	server = &Server{}
 	server.Initialize(v)
-	server.Run(v.GetString("server.port"))
+	server.Run(v.GetString(constants.ApiServer))
 }
 
 func (server *Server) Initialize(v *viper.Viper) {

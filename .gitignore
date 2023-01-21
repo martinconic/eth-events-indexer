@@ -1,8 +1,8 @@
 .env
 
-docker-compose.yaml
+.vscode
 
-./db-data/
+/db-data
 
 # Mac
 .DS_Store

@@ -1,0 +1,39 @@
+version: '3'
+services:
+  indexer:
+    env_file:
+      - .env
+    ports:
+      - ${server_port}:${server_port} 
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      dockerfile: Dockerfile
+      context: .
+    
+  db:
+    image: 'postgres:latest'
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${postgres_password}  
+    ports:
+      - ${postgres_port}:${postgres_port}
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/  
+      - ./scripts/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --username=${postgres_user} --dbname=${postgres_name}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db:
+    driver: local
+
+networks:
+    internal:
+      driver: bridge
