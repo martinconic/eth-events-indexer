@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/martinconic/eth-events-indexer/config"
 	"github.com/martinconic/eth-events-indexer/indexer"
+	"github.com/martinconic/eth-events-indexer/storage"
 	"github.com/martinconic/eth-events-indexer/utils/constants"
 	"github.com/spf13/viper"
 )
@@ -12,6 +13,8 @@ type Server struct {
 	Router *gin.Engine
 
 	NetworkClient *indexer.NetworkClient
+
+	database storage.Database
 }
 
 var server *Server
