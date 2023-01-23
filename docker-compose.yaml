@@ -18,7 +18,9 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_PASSWORD: ${postgres_password}  
+      POSTGRES_DB: ${postgres_name}
+      POSTGRES_PASSWORD: ${postgres_password}
+      POSTGRES_USER: ${postgres_user}  
     ports:
       - ${postgres_port}:${postgres_port}
     volumes:
