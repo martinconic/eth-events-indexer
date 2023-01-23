@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/martinconic/eth-events-indexer/config"
-	"github.com/martinconic/eth-events-indexer/indexer"
+	"github.com/martinconic/eth-events-indexer/network"
 	"github.com/martinconic/eth-events-indexer/storage"
 	"github.com/martinconic/eth-events-indexer/utils/constants"
 	"github.com/spf13/viper"
@@ -12,7 +12,7 @@ import (
 type Server struct {
 	Router *gin.Engine
 
-	NetworkClient *indexer.NetworkClient
+	NetworkClient *network.NetworkClient
 
 	database storage.Database
 }
@@ -27,7 +27,7 @@ func StartServer(v *viper.Viper) {
 
 func (server *Server) Initialize(v *viper.Viper) {
 	server.Router = gin.Default()
-	server.NetworkClient = indexer.NewNetworkClient(config.GetNetworkConfigs(v))
+	server.NetworkClient = network.NewNetworkClient(config.GetNetworkConfigs(v))
 	server.InitializeRoutes()
 }
 
