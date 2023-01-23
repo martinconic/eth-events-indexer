@@ -5,9 +5,9 @@ const (
 
 	PostgresHost = "postgres_host"
 	PostgresPort = "postgres_port"
-	PostgresName = "postgres_dbname"
-	PostgresUser = "postgres_dbuser"
-	PostgresPass = "postgres_dbpassword"
+	PostgresName = "postgres_name"
+	PostgresUser = "postgres_user"
+	PostgresPass = "postgres_password"
 
 	NetworkKey   = "network_key"
 	NetworkWss   = "network_wss"

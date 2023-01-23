@@ -7,18 +7,41 @@ import (
 )
 
 func GetSmartContractEvents(c *gin.Context) {
-	//get smart contract events
-	address := "0x3845badAde8e6dFF049820680d1F14bD3903a5d0"
+	a := c.Param("address")
 
-	err := server.NetworkClient.GetContractEvents(address)
+	address, err := server.db.Get(a)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": err.Error(),
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
 		})
+		return
+	}
+
+	err = server.NetworkClient.GetContractEvents(address)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"Status": "Started indexing events for Contract: " + address,
+		"status": "Started indexing events for Contract: " + address,
 	})
 
+}
+
+func AddSmartContract(c *gin.Context) {
+	address := c.Param("address")
+	err := server.db.Insert(address)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Success inserting contract: " + address,
+	})
 }

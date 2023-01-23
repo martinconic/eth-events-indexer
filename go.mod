@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/gin-gonic/gin v1.8.2
+	github.com/lib/pq v1.10.7
 	github.com/spf13/viper v1.15.0
 )
 
