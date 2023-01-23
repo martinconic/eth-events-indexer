@@ -72,8 +72,14 @@ func GetERC20Events(contractAbi abi.ABI, vLog types.Log) {
 	logTransferSigHash := crypto.Keccak256Hash(logTransferSig)
 	logApprovalSigHash := crypto.Keccak256Hash(LogApprovalSig)
 
-	log.Println(vLog.TxIndex)
-	log.Println(vLog.Topics)
+	log.Println("Address: ", vLog.Address)
+	log.Println("Address Hash: ", vLog.Address.Hash())
+	log.Println("TxIndex: ", vLog.TxIndex)
+	log.Println("Topics: ", vLog.Topics)
+	log.Println("BlockHash: ", vLog.BlockHash)
+	log.Println("TxHash: ", vLog.TxHash)
+	log.Println("Address Bytes: ", vLog.Address.Bytes())
+	log.Println("Removed: ", vLog.Removed)
 	log.Printf("Log Block Number: %d\n", vLog.BlockNumber)
 	log.Printf("Log Index: %d\n", vLog.Index)
 
