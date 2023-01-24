@@ -31,7 +31,10 @@ func StartServer(v *viper.Viper) {
 func (server *Server) Initialize(v *viper.Viper) {
 	var err error
 	server.Router = gin.Default()
-	server.NetworkClient = network.NewNetworkClient(config.GetNetworkConfigs(v))
+	server.NetworkClient, err = network.NewNetworkClient(config.GetNetworkConfigs(v))
+	if err != nil {
+		log.Println(err)
+	}
 	server.db, err = psqldb.NewDatabase(config.GetPostgresConfig(v))
 	if err != nil {
 		log.Println(err)

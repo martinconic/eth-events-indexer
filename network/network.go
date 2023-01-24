@@ -13,6 +13,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/martinconic/eth-events-indexer/config"
+	"github.com/martinconic/eth-events-indexer/data"
 )
 
 const definition = `[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newAdmin","type":"address"}],"name":"changeExecutionAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"},{"name":"amount","type":"uint256"}],"name":"burnFor","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"name":"approveFor","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"amountNeeded","type":"uint256"}],"name":"addAllowanceIfNeeded","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"burn","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"isExecutionOperator","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"isSuperOperator","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"executionOperator","type":"address"},{"name":"enabled","type":"bool"}],"name":"setExecutionOperator","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getAdmin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"},{"name":"gasLimit","type":"uint256"},{"name":"data","type":"bytes"}],"name":"approveAndExecuteWithSpecificGas","outputs":[{"name":"success","type":"bool"},{"name":"returnData","type":"bytes"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newAdmin","type":"address"}],"name":"changeAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"superOperator","type":"address"},{"name":"enabled","type":"bool"}],"name":"setSuperOperator","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getExecutionAdmin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"target","type":"address"},{"name":"amount","type":"uint256"},{"name":"data","type":"bytes"}],"name":"paidCall","outputs":[{"name":"","type":"bytes"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"target","type":"address"},{"name":"amount","type":"uint256"},{"name":"data","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"","type":"bytes"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"},{"name":"gasLimit","type":"uint256"},{"name":"tokenGasPrice","type":"uint256"},{"name":"baseGasCharge","type":"uint256"},{"name":"tokenReceiver","type":"address"},{"name":"data","type":"bytes"}],"name":"approveAndExecuteWithSpecificGasAndChargeForIt","outputs":[{"name":"success","type":"bool"},{"name":"returnData","type":"bytes"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"gasLimit","type":"uint256"},{"name":"data","type":"bytes"}],"name":"executeWithSpecificGas","outputs":[{"name":"success","type":"bool"},{"name":"returnData","type":"bytes"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"amount","type":"uint256"},{"name":"gasLimit","type":"uint256"},{"name":"tokenGasPrice","type":"uint256"},{"name":"baseGasCharge","type":"uint256"},{"name":"tokenReceiver","type":"address"}],"name":"transferAndChargeForGas","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"sandAdmin","type":"address"},{"name":"executionAdmin","type":"address"},{"name":"beneficiary","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"superOperator","type":"address"},{"indexed":false,"name":"enabled","type":"bool"}],"name":"SuperOperator","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"oldAdmin","type":"address"},{"indexed":false,"name":"newAdmin","type":"address"}],"name":"AdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"oldAdmin","type":"address"},{"indexed":false,"name":"newAdmin","type":"address"}],"name":"ExecutionAdminAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"executionOperator","type":"address"},{"indexed":false,"name":"enabled","type":"bool"}],"name":"ExecutionOperator","type":"event"}]`
@@ -22,7 +23,13 @@ type NetworkClient struct {
 
 	client *ethclient.Client
 
-	Logs chan types.Log
+	Contracts map[string]NetworkContract
+}
+
+type NetworkContract struct {
+	Sub         ethereum.Subscription
+	ContractAbi abi.ABI
+	Logs        chan types.Log
 }
 
 type LogTransfer struct {
@@ -37,10 +44,22 @@ type LogApproval struct {
 	value   *big.Int
 }
 
-func NewNetworkClient(c *config.NetworkConfig) *NetworkClient {
-	return &NetworkClient{
-		Config: c,
+func NewNetworkClient(c *config.NetworkConfig) (*NetworkClient, error) {
+	var err error
+	nc := &NetworkClient{
+		Config:    c,
+		Contracts: make(map[string]NetworkContract),
 	}
+
+	rawUrl := nc.Config.Wss + nc.Config.Key
+	nc.client, err = ethclient.Dial(rawUrl)
+
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	return nc, err
 }
 
 type Event struct {
@@ -66,7 +85,7 @@ func readLogEvents(contractAbi abi.ABI, vLog types.Log, logName string) {
 
 }
 
-func GetERC20Events(contractAbi abi.ABI, vLog types.Log) {
+func (contract *NetworkContract) GetERC20Events(vLog *types.Log) *data.Transaction {
 	logTransferSig := []byte("Transfer(address,address,uint256)")
 	LogApprovalSig := []byte("Approval(address,address,uint256)")
 	logTransferSigHash := crypto.Keccak256Hash(logTransferSig)
@@ -75,9 +94,13 @@ func GetERC20Events(contractAbi abi.ABI, vLog types.Log) {
 	log.Println("Address: ", vLog.Address)
 	log.Println("TxIndex: ", vLog.TxIndex)
 	log.Println("TxHash: ", vLog.TxHash)
+	log.Println("TxHashHex: ", vLog.TxHash.Hex())
+
 	log.Println("Removed: ", vLog.Removed)
 	log.Printf("Log Block Number: %d\n", vLog.BlockNumber)
 	log.Printf("Log Index: %d\n", vLog.Index)
+
+	var tx *data.Transaction
 
 	switch vLog.Topics[0].Hex() {
 	case logTransferSigHash.Hex():
@@ -86,7 +109,7 @@ func GetERC20Events(contractAbi abi.ABI, vLog types.Log) {
 		var transferEvent LogTransfer
 		var event Event
 
-		err := contractAbi.UnpackIntoInterface(&event, "Transfer", vLog.Data)
+		err := contract.ContractAbi.UnpackIntoInterface(&event, "Transfer", vLog.Data)
 		if err != nil {
 			log.Println(err)
 		}
@@ -100,13 +123,16 @@ func GetERC20Events(contractAbi abi.ABI, vLog types.Log) {
 		log.Printf("To: %s\n", transferEvent.to.Hex())
 		log.Printf("Tokens: %s\n", transferEvent.value.String())
 
+		tx = data.NewTransaction(vLog.TxHash.Hex(), transferEvent.from.Hex(), transferEvent.to.Hex(), transferEvent.value.String(),
+			int(vLog.BlockNumber), int(vLog.TxIndex), vLog.Removed, int(vLog.Index), "Transfer")
+
 	case logApprovalSigHash.Hex():
 		log.Printf("Log Name: Approval\n")
 
 		var approvalEvent LogApproval
 		var event Event
 
-		err := contractAbi.UnpackIntoInterface(&event, "Approval", vLog.Data)
+		err := contract.ContractAbi.UnpackIntoInterface(&event, "Approval", vLog.Data)
 		if err != nil {
 			log.Println(err)
 		}
@@ -120,50 +146,35 @@ func GetERC20Events(contractAbi abi.ABI, vLog types.Log) {
 	}
 
 	log.Printf("\n\n")
-
+	return tx
 }
 
 func (nc *NetworkClient) GetContractEvents(address string) error {
 	var err error
-
-	rawUrl := nc.Config.Wss + nc.Config.Key
-	nc.client, err = ethclient.Dial(rawUrl)
-
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
 
 	contractAddress := common.HexToAddress(address)
 	query := ethereum.FilterQuery{
 		Addresses: []common.Address{contractAddress},
 	}
 
-	nc.Logs = make(chan types.Log)
-	sub, err := nc.client.SubscribeFilterLogs(context.Background(), query, nc.Logs)
+	contract := NetworkContract{
+		Logs: make(chan types.Log),
+	}
+
+	sub, err := nc.client.SubscribeFilterLogs(context.Background(), query, contract.Logs)
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
+	contract.Sub = sub
 
 	contractAbi, err := abi.JSON(strings.NewReader(definition))
 	if err != nil {
 		log.Println(err)
 		return err
 	}
+	contract.ContractAbi = contractAbi
 
-	go func() {
-		for {
-			select {
-			case err = <-sub.Err():
-				log.Println(err)
-			case vLog := <-nc.Logs:
-				log.Println("---------------")
-				// readLogEvents(contractAbi, vLog, "Transfer")
-				GetERC20Events(contractAbi, vLog)
-			}
-		}
-	}()
-
+	nc.Contracts[address] = contract
 	return err
 }

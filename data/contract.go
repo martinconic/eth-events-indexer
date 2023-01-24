@@ -1,6 +1,8 @@
 package data
 
-import "time"
+import (
+	"time"
+)
 
 type Contract struct {
 	ID           int
@@ -8,4 +10,19 @@ type Contract struct {
 	IsIndexing   bool
 	LastTxDb     string
 	LastIndxDate time.Time
+}
+
+func NewContract(address string) *Contract {
+	return &Contract{
+		ScAddr: address,
+	}
+}
+
+func UpdateContract(address string, isIndexing bool, lastTx string) *Contract {
+	return &Contract{
+		ScAddr:       address,
+		IsIndexing:   isIndexing,
+		LastTxDb:     lastTx,
+		LastIndxDate: time.Now(),
+	}
 }
