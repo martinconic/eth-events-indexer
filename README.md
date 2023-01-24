@@ -23,3 +23,8 @@ go run main/main.go
 
 ## Database Cleanup
 - delete "db-data" folder from root project folder
+
+## Usage - from Postman
+- GET: /api/events/:address
+- GET: /api/indexed/:id
+- POST: /api/events/add/:address
