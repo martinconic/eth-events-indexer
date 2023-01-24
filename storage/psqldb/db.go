@@ -10,7 +10,6 @@ import (
 	"github.com/martinconic/eth-events-indexer/storage"
 
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
 )
 
 type PostgresDB struct {
