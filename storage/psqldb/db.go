@@ -44,6 +44,32 @@ func (d *PostgresDB) getDBConnection() error {
 	return err
 }
 
+func (p *PostgresDB) GetSmartContracts() ([]data.Contract, error) {
+	sc := []data.Contract{}
+	rows, err := p.DB.Query("SELECT id, sc_addr, is_indexing, last_tx_db, last_indx_date FROM contracts")
+	if err != nil {
+		return sc, err
+	}
+
+	for rows.Next() {
+		var c data.Contract
+		err = rows.Scan(
+			&c.ID,
+			&c.ScAddr,
+			&c.IsIndexing,
+			&c.LastTxDb,
+			&c.LastIndxDate,
+		)
+		if err != nil {
+			log.Println(err)
+		}
+
+		sc = append(sc, c)
+	}
+
+	return sc, nil
+}
+
 func (p *PostgresDB) UpdateIndexing(contract string, isIndexing bool) (string, error) {
 	sql := `UPDATE contracts SET is_indexing = $1 where sc_addr = $2`
 	_, err := p.DB.Exec(sql, isIndexing, contract)
