@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -75,7 +76,7 @@ func GetIndexedEvents(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": "Tx[0] Address: " + tx[0].TxAddr,
+		"status": "Transactions Events: " + fmt.Sprint(tx),
 	})
 }
 

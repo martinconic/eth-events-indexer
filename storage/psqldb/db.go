@@ -81,6 +81,7 @@ func (p *PostgresDB) Insert(contract string) (int64, error) {
 	result, err := p.DB.Exec(sql, contract)
 	if err != nil {
 		log.Println(err)
+		return -1, err
 	}
 	return result.LastInsertId()
 
