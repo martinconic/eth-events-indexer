@@ -91,14 +91,14 @@ func (contract *NetworkContract) GetERC20Events(vLog *types.Log) *data.Transacti
 	logTransferSigHash := crypto.Keccak256Hash(logTransferSig)
 	logApprovalSigHash := crypto.Keccak256Hash(LogApprovalSig)
 
-	log.Println("Address: ", vLog.Address)
-	log.Println("TxIndex: ", vLog.TxIndex)
-	log.Println("TxHash: ", vLog.TxHash)
-	log.Println("TxHashHex: ", vLog.TxHash.Hex())
+	// log.Println("Address: ", vLog.Address)
+	// log.Println("TxIndex: ", vLog.TxIndex)
+	// log.Println("TxHash: ", vLog.TxHash)
+	// log.Println("TxHashHex: ", vLog.TxHash.Hex())
 
-	log.Println("Removed: ", vLog.Removed)
-	log.Printf("Log Block Number: %d\n", vLog.BlockNumber)
-	log.Printf("Log Index: %d\n", vLog.Index)
+	// log.Println("Removed: ", vLog.Removed)
+	// log.Printf("Log Block Number: %d\n", vLog.BlockNumber)
+	// log.Printf("Log Index: %d\n", vLog.Index)
 
 	var tx *data.Transaction
 
