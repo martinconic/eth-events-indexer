@@ -1,4 +1,4 @@
-FROM golang:1.19.5 as builder
+FROM golang:1.20.11 as builder
 
 WORKDIR /indexer
 
