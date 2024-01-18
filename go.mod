@@ -1,6 +1,6 @@
 module github.com/martinconic/eth-events-indexer
 
-go 1.19
+go 1.21.5
 
 require (
 	github.com/ethereum/go-ethereum v1.10.26
